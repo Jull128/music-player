@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="navigate">
+        <button class="playlist"></button>
+        <p>Now play</p>
+        <button class="menu"></button>
+      </div>
+      <div class="main">
+        <div class="main__song">
+          <img src="/img/nervy.jpeg" class="main__song_img" />
+        </div>
+        <div class="main__author">
+          <p>Нервы</p>
+          <p>Батареи</p>
+        </div>
+      </div>
+      <div class="controls">
+        <div class="controls__seek">
+          <input type="range" class="seek-bar" min="1" max="100" value="0" />
+          <div class="controls__seek_time">
+            <span class="current-time">00:00</span>
+            <span class="duration">00:00</span>
+          </div>
+        </div>
+        <div class="controls__volume">
+          <div class="low_volume"></div>
+          <input type="range" class="volume-bar" min="1" max="100" value="99" />
+          <div class="hight_volume"></div>
+        </div>
+        <div class="controls__buttons">
+          <button class="mix"></button>
+          <button class="back"></button>
+          <button class="play-pause"></button>
+          <button class="next"></button>
+          <button class="repeat"></button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
