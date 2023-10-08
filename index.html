@@ -14,14 +14,16 @@
   </head>
   <body>
     <div class="container">
+      <ul class="playlist"></ul>
       <div class="navigate">
-        <button class="playlist"></button>
+        <button class="navigate_playlist"></button>
         <p>Now play</p>
         <button class="menu"></button>
       </div>
       <div class="main">
         <div class="main__song">
           <img src="/img/nervy.jpeg" class="main__song_img" />
+          <div class="waveform"></div>
         </div>
         <div class="main__author">
           <p>Нервы</p>
@@ -44,11 +46,13 @@
         <div class="controls__buttons">
           <button class="mix"></button>
           <button class="back"></button>
-          <button class="play-pause"></button>
+          <button class="play-pause start"></button>
           <button class="next"></button>
           <button class="repeat"></button>
         </div>
       </div>
     </div>
+    <script src="https://unpkg.com/wavesurfer.js@7"></script>
+    <script src="/index.js"></script>
   </body>
 </html>

@@ -97,7 +97,8 @@ body {
 
 .main__song {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   width: 240px;
   height: 240px;
   overflow: hidden;
@@ -123,6 +124,11 @@ body {
   font-size: 14px;
 }
 
+.playlist {
+  display: none;
+  margin: 0;
+}
+
 .repeat {
   background: url(/img/Repeat.png) no-repeat center / cover;
 }
@@ -138,7 +144,7 @@ body {
 .mix {
   background: url(/img/Shuffle.png) no-repeat center / cover;
 }
-.playlist {
+.navigate_playlist {
   background: url(/img/arrow.png) no-repeat center / cover;
 }
 .menu {
@@ -156,7 +162,7 @@ body {
   cursor: pointer;
 }
 
-.playlist,
+.navigate_playlist,
 .menu {
   width: 25px;
   height: 25px;
@@ -198,7 +204,7 @@ body {
 }
 
 .hight_volume {
-  width: 14px;
+  width: 16px;
   height: 14px;
   background: url(/img/hight_volume.png) no-repeat center / cover;
 }
