@@ -21,11 +21,29 @@ const volumeBar = document.querySelector(".volume-bar");
 const currentTime = document.querySelector(".current-time");
 const duration = document.querySelector(".duration");
 const playlist = document.querySelector(".playlist");
+const imgOFTrack = document.querySelector(".main__song_img");
+const singerOFTrack = document.querySelector(".singer");
+const nameOfTrack = document.querySelector(".nameOfTrack");
 
 const arrayPlaylist = [
-  "audio/96_minutes.mp3",
-  "audio/batarei.mp3",
-  "audio/glupaya.mp3",
+  {
+    url: "audio/96_minutes.mp3",
+    photo: "nervy.jpeg",
+    title: "Нервы",
+    song: "96 минут",
+  },
+  {
+    url: "audio/batarei.mp3",
+    photo: "nervy.jpeg",
+    title: "Нервы",
+    song: "Батареи",
+  },
+  {
+    url: "audio/glupaya.mp3",
+    photo: "nervy.jpeg",
+    title: "Нервы",
+    song: "Глупая",
+  },
 ];
 
 const currentIndex = 0;
@@ -35,17 +53,21 @@ arrayPlaylist.forEach((audio, id) => {
   track.textContent = `${id + 1}`;
   track.addEventListener("click", () => {
     currentIndex = id;
-    playTrack(currentIndex);
+    playTrack(currentIndex.url);
   });
   playlist.appendChild(track);
 });
 
 const playTrack = (id) => {
   const trackToPlay = arrayPlaylist[id];
-  player.load(trackToPlay);
+  player.load(trackToPlay.url);
   console.log(trackToPlay);
   player.on("ready", () => {
     player.play();
+    imgOFTrack.src = trackToPlay.photo;
+    singerOFTrack.textContent = trackToPlay.title;
+    nameOfTrack.textContent = trackToPlay.song;
+    play.src = "img/pause.png";
     //поменять иконку на паузу
     // функция изменения времени
   });
@@ -59,6 +81,14 @@ play.addEventListener("click", () => {
     player.play();
   }
 });
+
+// переключение на следующий трек
+// переключение на предыдующий трек
+// обновление оставшегося времени
+// обновление прошедшего времени
+// управление ползунком трека
+// управление громкостью
+// повтор одного трека
 
 // Загрузка первого трека при загрузке страницы
 
