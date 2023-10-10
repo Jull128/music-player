@@ -136,8 +136,20 @@ body {
   background: url(/img/back.png) no-repeat center / cover;
 }
 .play-pause {
-  background: url(/img/play.png) no-repeat center / cover;
+  background: rgba(0, 0, 0, 0);
+  background-image: url(/img/play.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
+.pause {
+  background: rgba(0, 0, 0, 0);
+  background-image: url(/img/pause.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .next {
   background: url(/img/next.png) no-repeat center / cover;
 }
@@ -154,6 +166,7 @@ body {
 .repeat,
 .back,
 .play-pause,
+.pause,
 .next,
 .mix {
   width: 17px;

@@ -28,25 +28,25 @@ const nameOfTrack = document.querySelector(".nameOfTrack");
 const arrayPlaylist = [
   {
     url: "audio/96_minutes.mp3",
-    photo: "nervy.jpeg",
+    photo: "img/nervy.jpeg",
     title: "Нервы",
     song: "96 минут",
   },
   {
     url: "audio/batarei.mp3",
-    photo: "nervy.jpeg",
+    photo: "img/nervy.jpeg",
     title: "Нервы",
     song: "Батареи",
   },
   {
     url: "audio/glupaya.mp3",
-    photo: "nervy.jpeg",
+    photo: "img/nervy.jpeg",
     title: "Нервы",
     song: "Глупая",
   },
 ];
 
-const currentIndex = 0;
+let currentIndex = 0;
 
 arrayPlaylist.forEach((audio, id) => {
   const track = document.createElement("li");
@@ -67,25 +67,82 @@ const playTrack = (id) => {
     imgOFTrack.src = trackToPlay.photo;
     singerOFTrack.textContent = trackToPlay.title;
     nameOfTrack.textContent = trackToPlay.song;
-    play.src = "img/pause.png";
+    play.className = "pause";
     //поменять иконку на паузу
     // функция изменения времени
+    duration.textContent = formatTime(player.getDuration());
   });
 };
 
+const switchTrack = (direction) => {
+  player.empty();
+
+  if (direction === "next") {
+    currentIndex = (currentIndex + 1) % arrayPlaylist.length;
+    playTrack(currentIndex);
+  } else if (direction === "back") {
+    currentIndex =
+      (currentIndex - 1 + arrayPlaylist.length) % arrayPlaylist.length;
+
+    playTrack(currentIndex);
+  }
+};
+
 play.addEventListener("click", () => {
-  //   playTrack(currentIndex);
   if (player.isPlaying()) {
+    play.className = "play-pause";
     player.pause();
   } else {
+    play.className = "pause";
     player.play();
   }
 });
 
-// переключение на следующий трек
-// переключение на предыдующий трек
-// обновление оставшегося времени
-// обновление прошедшего времени
+next.addEventListener("click", () => {
+  switchTrack("next");
+});
+
+back.addEventListener("click", () => {
+  switchTrack("back");
+});
+
+// обновление времени
+const formatTime = (time) => {
+  const minutes = Math.floor(time / 60);
+  const seconds = Math.floor(time % 60);
+  const formatted = `${minutes}:${seconds}`;
+  return formatted;
+};
+
+// обработчик событиый перемещения ползунка аудио
+seekBar.addEventListener("input", () => {
+  // console.log(player.getDuration(), seekBar.value / 100);
+  const seekTime = player.getDuration() * (seekBar.value / 100);
+  player.seekTo(seekTime);
+});
+
+// обновление текущего времени
+const updCurrentTime = () => {
+  currentTime.textContent = formatTime(player.getCurrentTime());
+};
+
+// Обновление текущего времени трека каждую секунду
+player.on("audioprocess", updCurrentTime);
+
+// Обновление ползунка перемотки трека каждую секунду
+player.on("audioprocess", () => {
+  const percentage = (player.getCurrentTime() / player.getDuration()) * 100;
+  seekBar.value = percentage;
+  // console.log(seekBar.value);
+});
+
+// обновление времени при перемещении ползунка
+player.on("seek", () => {
+  updCurrentTime();
+  const percentage = (player.getCurrentTime() / player.getDuration()) * 100;
+  seekBar.value = percentage;
+});
+
 // управление ползунком трека
 // управление громкостью
 // повтор одного трека
