@@ -42,13 +42,13 @@ const arrayPlaylist = [
   },
   {
     url: "audio/batarei.mp3",
-    photo: "img/nervy.jpeg",
+    photo: "img/nervy2.jpg",
     title: "Нервы",
     song: "Батареи",
   },
   {
     url: "audio/glupaya.mp3",
-    photo: "img/nervy.jpeg",
+    photo: "img/nervy3.jpg",
     title: "Нервы",
     song: "Глупая",
   },
@@ -58,7 +58,7 @@ let currentIndex = 0;
 
 arrayPlaylist.forEach((audio, id) => {
   let track = `
-  <li class='item' id=${id}>
+  <li class='item' id=${id} onclick='clicked(this)'>
   <div>${id + 1}</div>
   <div class='icon' ><img src="${audio.photo}"/></div>
   <div class='item__title'>
@@ -73,6 +73,13 @@ arrayPlaylist.forEach((audio, id) => {
 console.log(playlist);
 const item = playlist.querySelectorAll("li");
 console.log(item);
+
+const clicked = (item) => {
+  let id = item.id;
+  currentIndex = id;
+  playTrack(currentIndex);
+};
+
 const playTrack = (id) => {
   const trackToPlay = arrayPlaylist[id];
   player.load(trackToPlay.url);
