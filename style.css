@@ -202,8 +202,8 @@ body {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  width: 7px;
-  height: 7px;
+  width: 9px;
+  height: 9px;
   background: white;
   border: 3px solid rgba(255, 255, 255, 0.15);
   cursor: pointer;

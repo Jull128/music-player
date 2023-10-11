@@ -110,7 +110,7 @@ back.addEventListener("click", () => {
 const formatTime = (time) => {
   const minutes = Math.floor(time / 60);
   const seconds = Math.floor(time % 60);
-  const formatted = `${minutes}:${seconds}`;
+  const formatted = `${minutes}:${seconds > 9 ? seconds : "0" + seconds}`;
   return formatted;
 };
 
@@ -118,15 +118,15 @@ const updCurrentTime = () => {
   currentTime.textContent = formatTime(player.getCurrentTime());
 };
 
-seekBar.addEventListener("input", () => {
-  const seekTime = (seekBar.value / 100) * player.getDuration();
-  player.seekTo(seekTime);
+volumeBar.addEventListener("input", () => {
+  const volume = volumeBar.value / 100;
+  player.setVolume(volume);
 });
 
-seekBar.addEventListener("change", () => {
-  if (player.isPlaying()) {
-    player.play();
-  }
+seekBar.addEventListener("input", () => {
+  updCurrentTime();
+  const seekTime = seekBar.value / 100;
+  player.seekTo(seekTime);
 });
 
 player.on("audioprocess", updCurrentTime);
@@ -142,48 +142,10 @@ player.on("timeupdate", () => {
   seekBar.value = percentage;
 });
 
-// обновление текущего времени
-// const updCurrentTime = () => {
-//   console.log(currentTime.textContent);
-//   currentTime.textContent = formatTime(player.getCurrentTime());
-// };
-
-// // Обновление текущего времени трека каждую секунду
-// player.on("audioprocess", updCurrentTime);
-
-// // обновление времени при перемещении ползунка
-// player.on("seeking", () => {
-//   updCurrentTime();
-//   const percentage = (player.getCurrentTime() / player.getDuration()) * 100;
-//   seekBar.value = percentage;
-
-//   console.log(percentage);
-// });
-
-// // обработчик событиый перемещения ползунка аудио
-// seekBar.addEventListener("input", () => {
-//   player.pause();
-//   updCurrentTime();
-//   // console.log(player.getDuration(), seekBar.value / 100);
-//   const seekTime = (seekBar.value / 100) * player.getDuration();
-//   player.seekTo(seekTime);
-// });
-
-// // Обновление ползунка перемотки трека каждую секунду
-// player.on("timeupdate", () => {
-//   const percentage = (player.getCurrentTime() / player.getDuration()) * 100;
-//   console.log(percentage);
-//   seekBar.value = percentage;
-//   console.log(seekBar.value);
-// });
-
-// seekBar.addEventListener("change", () => {
-//   // Восстанавливаем воспроизведение после перемещения
-//   player.play();
-// });
-// управление ползунком трека
-// управление громкостью
-// повтор одного трека
+player.on("finish", () => {
+  //поставить завичимость от повтора
+  switchTrack("next");
+});
 
 // Загрузка первого трека при загрузке страницы
 
