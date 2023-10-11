@@ -10,6 +10,7 @@ body {
 }
 
 .container {
+  position: relative;
   width: 250px;
   height: 530px;
   display: flex;
@@ -124,11 +125,6 @@ body {
   font-size: 14px;
 }
 
-.playlist {
-  display: none;
-  margin: 0;
-}
-
 .repeat {
   background: url(/img/Repeat.png) no-repeat center / cover;
 }
@@ -220,4 +216,66 @@ body {
   width: 16px;
   height: 14px;
   background: url(/img/hight_volume.png) no-repeat center / cover;
+}
+
+/* playlist */
+.playlist__container {
+  display: none;
+  margin: 0;
+}
+
+.playlist__container.show {
+  display: block;
+  position: absolute;
+  top: 53px;
+  width: calc(100% - 20px);
+  background: linear-gradient(180deg, #54374ce3 0%, #202020 59.37%);
+  border-radius: 0px 0px 10px 10px;
+  padding: 15px 10px;
+  margin: 0;
+}
+
+.playlist {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.icon {
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  height: 25px;
+  width: 25px;
+  border-radius: 3px;
+}
+
+.icon > img {
+  height: 100%;
+}
+
+.item {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 15px;
+  list-style: none;
+  color: white;
+  font-size: 10px;
+}
+
+.item > div:first-child {
+  width: 10px;
+}
+
+.item__title > p {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 10px;
+  color: white;
+  line-height: 14px;
+  margin: 0;
 }

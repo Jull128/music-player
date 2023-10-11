@@ -21,9 +21,17 @@ const volumeBar = document.querySelector(".volume-bar");
 const currentTime = document.querySelector(".current-time");
 const duration = document.querySelector(".duration");
 const playlist = document.querySelector(".playlist");
+const playlistContainer = document.querySelector(".playlist__container");
 const imgOFTrack = document.querySelector(".main__song_img");
 const singerOFTrack = document.querySelector(".singer");
 const nameOfTrack = document.querySelector(".nameOfTrack");
+const showPlaylist = document.querySelector(".navigate_playlist");
+
+showPlaylist.addEventListener("click", () => {
+  if (playlistContainer.className === "playlist__container") {
+    playlistContainer.className = "playlist__container show";
+  } else playlistContainer.className = "playlist__container";
+});
 
 const arrayPlaylist = [
   {
@@ -49,15 +57,22 @@ const arrayPlaylist = [
 let currentIndex = 0;
 
 arrayPlaylist.forEach((audio, id) => {
-  const track = document.createElement("li");
-  track.textContent = `${id + 1}`;
-  track.addEventListener("click", () => {
-    currentIndex = id;
-    playTrack(currentIndex);
-  });
-  playlist.appendChild(track);
+  let track = `
+  <li class='item' id=${id}>
+  <div>${id + 1}</div>
+  <div class='icon' ><img src="${audio.photo}"/></div>
+  <div class='item__title'>
+  <p>${audio.title}</p>
+  <p>${audio.song}</p>
+  </div>
+  </li>
+  `;
+  playlist.insertAdjacentHTML("beforeend", track);
 });
 
+console.log(playlist);
+const item = playlist.querySelectorAll("li");
+console.log(item);
 const playTrack = (id) => {
   const trackToPlay = arrayPlaylist[id];
   player.load(trackToPlay.url);
