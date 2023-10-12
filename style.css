@@ -223,7 +223,7 @@ body {
 
 .seek-bar::-webkit-slider-thumb {
   background: rgba(255, 255, 255, 0);
-  border: 3px rgba(255, 255, 255, 0) rgba(255, 255, 255, 0);
+  border: none;
 }
 
 .low_volume {

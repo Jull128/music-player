@@ -1,5 +1,3 @@
-// import { WaveSurfer } from "wavesurfer.js";
-
 // Экземпляр плеера
 const player = WaveSurfer.create({
   container: ".waveform",
@@ -7,7 +5,7 @@ const player = WaveSurfer.create({
   waveColor: "white",
   progressColor: "pink",
   cursorColor: "red",
-  barWidth: 0.02,
+  barWidth: 0.01,
   barHeight: 1,
   height: 20,
   barRadius: 1,
@@ -61,7 +59,6 @@ const arrayPlaylist = [
   },
 ];
 
-localStorage.setItem("playlist", JSON.stringify(arrayPlaylist));
 let arrayPlaylistLS;
 const getLS = () => {
   const LS = localStorage.getItem("playlist");
@@ -70,7 +67,7 @@ const getLS = () => {
   } else arrayPlaylistLS = arrayPlaylist;
 };
 getLS();
-
+localStorage.setItem("playlist", JSON.stringify(arrayPlaylistLS));
 let currentIndex = 0;
 
 arrayPlaylistLS.forEach((audio, id) => {
@@ -107,16 +104,23 @@ const clicked = (item) => {
 const playTrack = (id) => {
   const trackToPlay = arrayPlaylistLS[id];
   player.load(trackToPlay.url);
-  console.log(trackToPlay);
   player.on("ready", () => {
     player.play();
     imgOFTrack.src = trackToPlay.photo;
     singerOFTrack.textContent = trackToPlay.title;
     nameOfTrack.textContent = trackToPlay.song;
-
     duration.textContent = formatTime(player.getDuration());
   });
+  localStorage.setItem("currentIndex", id.toString());
 };
+
+window.addEventListener("load", () => {
+  const savedIndex = localStorage.getItem("currentIndex");
+  if (savedIndex !== null) {
+    currentIndex = parseInt(savedIndex);
+  }
+  playTrack(currentIndex);
+});
 
 const switchTrack = (direction) => {
   player.empty();
@@ -138,7 +142,6 @@ play.addEventListener("click", () => {
     player.pause();
   } else {
     play.className = "pause";
-    console.log("wow");
     player.play();
   }
 });
@@ -188,7 +191,6 @@ player.on("timeupdate", () => {
 });
 
 let isRepeating = false;
-console.log(isRepeating);
 repeat.addEventListener("click", () => {
   isRepeating = !isRepeating;
   console.log(isRepeating);
@@ -197,6 +199,14 @@ repeat.addEventListener("click", () => {
   } else if (isRepeating) {
     repeat.className = "repeatOne";
   }
+});
+
+mix.addEventListener("click", () => {
+  // Генерируем случайный индекс трека в диапазоне от 0 до длины плейлиста
+  const randomIndex = Math.floor(Math.random() * arrayPlaylistLS.length);
+  console.log(randomIndex);
+  currentIndex = randomIndex;
+  playTrack(currentIndex);
 });
 
 player.on("finish", () => {
@@ -216,15 +226,35 @@ playTrack(currentIndex);
 fileInput.addEventListener("change", function () {
   const file = fileInput.files[0];
   if (file) {
-    const url = URL.createObjectURL(file);
-    const listItem = document.createElement("li");
-    listItem.textContent = file.name;
-    listItem.className = "item";
-    player.load(url);
-    // listItem.addEventListener("click", function () {
-    //   player.src = url;
-    //   audio.play();
-    // });
-    playlist.appendChild(listItem);
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const track = {
+        url: e.target.result,
+        photo: "img/nervy2.jpg",
+        title: "Нервы",
+        song: file.name,
+      };
+
+      arrayPlaylistLS = [...arrayPlaylistLS, track];
+      localStorage.setItem("playlist", JSON.stringify(arrayPlaylistLS));
+      currentIndex = arrayPlaylistLS.length - 1;
+
+      playlist.innerHTML = "";
+      arrayPlaylistLS.forEach((audio, id) => {
+        let trackList = `
+  <li class='item' id=${id} onclick='clicked(this)'>
+  <div>${id + 1}</div>
+  <div class='icon' ><img src="${audio.photo}"/></div>
+  <div class='item__title'>
+  <p>${audio.title}</p>
+  <p>${audio.song}</p>
+  </div>
+  </li>
+  `;
+        playlist.insertAdjacentHTML("beforeend", trackList);
+      });
+      playTrack(currentIndex);
+    };
+    reader.readAsDataURL(file);
   }
 });
