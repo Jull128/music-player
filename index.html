@@ -22,11 +22,11 @@
       </div>
       <div class="playlist__container">
         <ul class="playlist"></ul>
+        <input type="file" id="fileInput" accept="audio/*" />
       </div>
       <div class="main">
         <div class="main__song">
           <img src="/img/nervy.jpeg" class="main__song_img" />
-          <div class="waveform"></div>
         </div>
         <div class="main__author">
           <p class="singer">Нервы</p>
@@ -36,6 +36,7 @@
       <div class="controls">
         <div class="controls__seek">
           <input type="range" class="seek-bar" min="0" max="100" value="0" />
+          <div class="waveform"></div>
           <div class="controls__seek_time">
             <span class="current-time">00:00</span>
             <span class="duration">00:00</span>

@@ -27,6 +27,7 @@ body {
 }
 
 .controls {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -48,12 +49,13 @@ body {
 }
 
 .controls__seek {
+  position: relative;
   width: 220px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  gap: 7px;
+  gap: 12px;
   color: white;
   font-size: 8px;
   font-weight: 300;
@@ -128,6 +130,10 @@ body {
 .repeat {
   background: url(/img/Repeat.png) no-repeat center / cover;
 }
+
+.repeatOne {
+  background: url(/img/RepeatOne.png) no-repeat center / cover;
+}
 .back {
   background: url(/img/back.png) no-repeat center / cover;
 }
@@ -160,6 +166,7 @@ body {
 }
 
 .repeat,
+.repeatOne,
 .back,
 .play-pause,
 .pause,
@@ -179,6 +186,10 @@ body {
   cursor: pointer;
 }
 
+.navigate_playlist.rotate {
+  rotate: 180deg;
+}
+
 .seek-bar,
 .volume-bar {
   width: 100%;
@@ -193,6 +204,10 @@ body {
   margin: 0;
 }
 
+.seek-bar {
+  background: rgba(255, 255, 255, 0);
+}
+
 .seek-bar::-webkit-slider-thumb,
 .volume-bar::-webkit-slider-thumb {
   -webkit-appearance: none;
@@ -204,6 +219,11 @@ body {
   border: 3px solid rgba(255, 255, 255, 0.15);
   cursor: pointer;
   border-radius: 100%;
+}
+
+.seek-bar::-webkit-slider-thumb {
+  background: rgba(255, 255, 255, 0);
+  border: 3px rgba(255, 255, 255, 0) rgba(255, 255, 255, 0);
 }
 
 .low_volume {
@@ -272,10 +292,17 @@ body {
   list-style: none;
   color: white;
   font-size: 10px;
+  cursor: pointer;
+}
+
+.item:hover {
+  background-color: rgba(255, 255, 255, 0.247);
+  border-radius: 3px;
 }
 
 .item > div:first-child {
   width: 5px;
+  margin-left: 7px;
 }
 
 .item__title > p {
@@ -284,4 +311,12 @@ body {
   color: white;
   line-height: 14px;
   margin: 0;
+}
+
+.waveform {
+  z-index: 0;
+  position: absolute;
+  top: -9px;
+  width: 100%;
+  height: 40px;
 }

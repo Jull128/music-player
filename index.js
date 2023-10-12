@@ -1,14 +1,16 @@
 // import { WaveSurfer } from "wavesurfer.js";
 
 // Экземпляр плеера
-// window.onload = function () {
 const player = WaveSurfer.create({
   container: ".waveform",
-  waveColor: "grey",
-  progressColor: "blue",
+  autoplay: false,
+  waveColor: "white",
+  progressColor: "pink",
   cursorColor: "red",
-  barHeight: 2,
-  height: 50,
+  barWidth: 0.02,
+  barHeight: 1,
+  height: 20,
+  barRadius: 1,
 });
 
 const play = document.querySelector(".play-pause");
@@ -26,11 +28,16 @@ const imgOFTrack = document.querySelector(".main__song_img");
 const singerOFTrack = document.querySelector(".singer");
 const nameOfTrack = document.querySelector(".nameOfTrack");
 const showPlaylist = document.querySelector(".navigate_playlist");
+const fileInput = document.getElementById("fileInput");
 
 showPlaylist.addEventListener("click", () => {
   if (playlistContainer.className === "playlist__container") {
+    showPlaylist.classList.add("rotate");
     playlistContainer.className = "playlist__container show";
-  } else playlistContainer.className = "playlist__container";
+  } else {
+    showPlaylist.classList.remove("rotate");
+    playlistContainer.className = "playlist__container";
+  }
 });
 
 const arrayPlaylist = [
@@ -54,9 +61,19 @@ const arrayPlaylist = [
   },
 ];
 
+localStorage.setItem("playlist", JSON.stringify(arrayPlaylist));
+let arrayPlaylistLS;
+const getLS = () => {
+  const LS = localStorage.getItem("playlist");
+  if (LS) {
+    arrayPlaylistLS = JSON.parse(LS);
+  } else arrayPlaylistLS = arrayPlaylist;
+};
+getLS();
+
 let currentIndex = 0;
 
-arrayPlaylist.forEach((audio, id) => {
+arrayPlaylistLS.forEach((audio, id) => {
   let track = `
   <li class='item' id=${id} onclick='clicked(this)'>
   <div>${id + 1}</div>
@@ -70,10 +87,17 @@ arrayPlaylist.forEach((audio, id) => {
   playlist.insertAdjacentHTML("beforeend", track);
 });
 
-console.log(playlist);
 const item = playlist.querySelectorAll("li");
-console.log(item);
+const isPlay = () => {
+  if (player.isPlaying()) {
+    play.className = "pause";
+  } else {
+    play.className = "play-pause";
 
+    console.log("wow");
+  }
+};
+isPlay();
 const clicked = (item) => {
   let id = item.id;
   currentIndex = id;
@@ -81,7 +105,7 @@ const clicked = (item) => {
 };
 
 const playTrack = (id) => {
-  const trackToPlay = arrayPlaylist[id];
+  const trackToPlay = arrayPlaylistLS[id];
   player.load(trackToPlay.url);
   console.log(trackToPlay);
   player.on("ready", () => {
@@ -89,9 +113,7 @@ const playTrack = (id) => {
     imgOFTrack.src = trackToPlay.photo;
     singerOFTrack.textContent = trackToPlay.title;
     nameOfTrack.textContent = trackToPlay.song;
-    play.className = "pause";
-    //поменять иконку на паузу
-    // функция изменения времени
+
     duration.textContent = formatTime(player.getDuration());
   });
 };
@@ -100,11 +122,11 @@ const switchTrack = (direction) => {
   player.empty();
 
   if (direction === "next") {
-    currentIndex = (currentIndex + 1) % arrayPlaylist.length;
+    currentIndex = (currentIndex + 1) % arrayPlaylistLS.length;
     playTrack(currentIndex);
   } else if (direction === "back") {
     currentIndex =
-      (currentIndex - 1 + arrayPlaylist.length) % arrayPlaylist.length;
+      (currentIndex - 1 + arrayPlaylistLS.length) % arrayPlaylistLS.length;
 
     playTrack(currentIndex);
   }
@@ -116,6 +138,7 @@ play.addEventListener("click", () => {
     player.pause();
   } else {
     play.className = "pause";
+    console.log("wow");
     player.play();
   }
 });
@@ -164,12 +187,44 @@ player.on("timeupdate", () => {
   seekBar.value = percentage;
 });
 
+let isRepeating = false;
+console.log(isRepeating);
+repeat.addEventListener("click", () => {
+  isRepeating = !isRepeating;
+  console.log(isRepeating);
+  if (!isRepeating) {
+    repeat.className = "repeat";
+  } else if (isRepeating) {
+    repeat.className = "repeatOne";
+  }
+});
+
 player.on("finish", () => {
-  //поставить завичимость от повтора
-  switchTrack("next");
+  if (!isRepeating) {
+    switchTrack("next");
+  } else if (isRepeating) {
+    player.stop();
+    player.play();
+  }
 });
 
 // Загрузка первого трека при загрузке страницы
 
 playTrack(currentIndex);
-// };
+
+// Обработчик выбора файла
+fileInput.addEventListener("change", function () {
+  const file = fileInput.files[0];
+  if (file) {
+    const url = URL.createObjectURL(file);
+    const listItem = document.createElement("li");
+    listItem.textContent = file.name;
+    listItem.className = "item";
+    player.load(url);
+    // listItem.addEventListener("click", function () {
+    //   player.src = url;
+    //   audio.play();
+    // });
+    playlist.appendChild(listItem);
+  }
+});
